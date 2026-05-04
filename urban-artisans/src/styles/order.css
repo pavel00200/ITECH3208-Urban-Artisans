@@ -1,0 +1,98 @@
+.order-page {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+.order-page h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.order-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Left: Ordered items */
+.order-items {
+  border-right: 1px solid #ddd;
+  padding-right: 1rem;
+}
+
+.order-item {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed #ccc;
+}
+
+.order-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.order-item h3 {
+  margin: 0;
+}
+
+.order-item p {
+  margin: 0.25rem 0;
+}
+
+/* Right: Summary */
+.order-summary {
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.order-summary h2 {
+  margin-bottom: 0.5rem;
+}
+
+.order-summary p {
+  margin: 0.25rem 0;
+}
+
+/* Button */
+.btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: #222;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.btn:hover {
+  background: #444;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .order-container {
+    grid-template-columns: 1fr;
+  }
+  .order-items {
+    border-right: none;
+    padding-right: 0;
+  }
+  .order-summary {
+    padding-left: 0;
+  }
+}
