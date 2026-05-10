@@ -4,7 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import "../styles/cart.css";
 
 export default function Cart() {
-  const { cart, removeFromCart, clearCart } = useCart();
+  const {
+    cart,
+    removeFromCart,
+    clearCart,
+    increaseQty,
+    decreaseQty,
+  } = useCart();
+
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
@@ -18,9 +25,9 @@ export default function Cart() {
   }
 
   const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
 
   function handleCheckout() {
-    // send to login first if not logged in, otherwise go straight to checkout
     navigate(isLoggedIn ? "/checkout" : "/login");
   }
 
@@ -39,15 +46,43 @@ export default function Cart() {
       <div className="cart-grid">
         <ul className="cart-list">
           {cart.map((item, i) => (
-            <li key={i} className="cart-item">
+            <li key={`${item.id}-${item.option}-${i}`} className="cart-item">
               <img src={item.img} alt={item.name} className="cart-img" />
+
               <div className="cart-info">
                 <h3>{item.name}</h3>
-                {item.option && <p className="cart-option">Option: {item.option}</p>}
+
+                {item.option && (
+                  <p className="cart-option">Option: {item.option}</p>
+                )}
+
                 <p>Price: ${item.price}</p>
-                <p>Qty: {item.qty}</p>
-                <p className="cart-subtotal">Subtotal: ${item.price * item.qty}</p>
+
+                <div className="cart-qty-row">
+                  <span>Qty:</span>
+
+                  <button
+                    className="cart-qty-btn"
+                    onClick={() => decreaseQty(item.id, item.option)}
+                  >
+                    -
+                  </button>
+
+                  <span className="cart-qty-value">{item.qty}</span>
+
+                  <button
+                    className="cart-qty-btn"
+                    onClick={() => increaseQty(item.id, item.option)}
+                  >
+                    +
+                  </button>
+                </div>
+
+                <p className="cart-subtotal">
+                  Subtotal: ${item.price * item.qty}
+                </p>
               </div>
+
               <button
                 className="btn-remove"
                 onClick={() => removeFromCart(item.id, item.option)}
@@ -60,7 +95,7 @@ export default function Cart() {
 
         <aside className="cart-summary">
           <h2>Order Summary</h2>
-          <p>Total Items: {cart.length}</p>
+          <p>Total Items: {totalItems}</p>
           <h3>Total: ${total.toFixed(2)}</h3>
 
           <button className="btn-checkout" onClick={handleCheckout}>

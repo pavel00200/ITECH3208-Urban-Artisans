@@ -122,3 +122,29 @@
 .btn:hover {
   background: #444;
 }
+.cart-qty-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+
+.cart-qty-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #c9b8a8;
+  background: #fff;
+  border-radius: 8px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.cart-qty-btn:hover {
+  background: #f5eee7;
+}
+
+.cart-qty-value {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 700;
+}
