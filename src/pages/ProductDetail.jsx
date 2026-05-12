@@ -18,7 +18,7 @@ export default function ProductDetail() {
     setLoading(true);
     setError("");
 
-    fetch(`http://localhost:4000/products/${id}`)
+    fetch(`https://itech3208-urban-artisans.onrender.com/products/${id}`)
 
       .then((res) => {
 
