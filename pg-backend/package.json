@@ -1,13 +1,16 @@
 {
   "name": "urban-artisans-backend",
   "version": "1.0.0",
-  "description": "Urban Artisans backend API — PostgreSQL version",
+  "description": "Urban Artisans backend API - PostgreSQL version",
   "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
     "seed": "node db/seed.js"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
     "cors": "^2.8.5",
