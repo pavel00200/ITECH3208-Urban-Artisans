@@ -38,7 +38,7 @@ node server.js
 
 If everything is working correctly, you will see:
 
-Running at http://localhost:4000
+Running at https://itech3208-urban-artisans.onrender.com
 PostgreSQL connected successfully
 💻 Step 2 – Run Frontend
 

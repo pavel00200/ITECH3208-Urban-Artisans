@@ -3,19 +3,25 @@ import { readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
+
 dotenv.config();
+
 const { Pool } = pg;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-console.log(process.env.DB_PASSWORD);
+const isProduction = process.env.NODE_ENV === "production";
+
 const pool = new Pool({
-  host:     process.env.DB_HOST     || "localhost",
-  port:     parseInt(process.env.DB_PORT) || 5432,
-  database: process.env.DB_NAME     || "urban_artisans",
-  user:     process.env.DB_USER     || "postgres",
+  host: process.env.DB_HOST || "localhost",
+  port: Number(process.env.DB_PORT || 5432),
+  database: process.env.DB_NAME || "urban_artisans",
+  user: process.env.DB_USER || "postgres",
   password: process.env.DB_PASSWORD || "artisans",
+  ssl: isProduction
+    ? {
+        rejectUnauthorized: false,
+      }
+    : false,
 });
 
 async function seed() {
@@ -31,7 +37,9 @@ async function seed() {
     console.log("[OK] Tables created.");
 
     // clear existing data so seed can be run multiple times safely
-    await client.query("TRUNCATE orders, products, artisans, users RESTART IDENTITY CASCADE");
+    await client.query(
+      "TRUNCATE orders, products, artisans, users RESTART IDENTITY CASCADE"
+    );
     console.log("[OK] Old data cleared.");
 
     // ── users ───────────────────────────────────────────────
@@ -44,17 +52,17 @@ async function seed() {
     `);
     console.log("[OK] Users inserted.");
 
-  // ── artisans ─────────────────────────────────────────────
-  await client.query(`
-    INSERT INTO artisans (name, email, craft, location) VALUES
-      ('Maya Tamang',   'maya@artisans.com',   'Jewelry',     'Sydney, NSW'),
-      ('Bikram Lama',   'bikram@artisans.com', 'Home Decor',  'Melbourne, VIC'),
-      ('Sunita Magar',  'sunita@artisans.com', 'Clothing',    'Brisbane, QLD'),
-      ('Hari Shrestha', 'hari@artisans.com',   'Accessories', 'Perth, WA')
-  `);
-  console.log("[OK] Artisans inserted.");
+    // ── artisans ─────────────────────────────────────────────
+    await client.query(`
+      INSERT INTO artisans (name, email, craft, location) VALUES
+        ('Maya Tamang',   'maya@artisans.com',   'Jewelry',     'Sydney, NSW'),
+        ('Bikram Lama',   'bikram@artisans.com', 'Home Decor',  'Melbourne, VIC'),
+        ('Sunita Magar',  'sunita@artisans.com', 'Clothing',    'Brisbane, QLD'),
+        ('Hari Shrestha', 'hari@artisans.com',   'Accessories', 'Perth, WA')
+    `);
+    console.log("[OK] Artisans inserted.");
 
-    // ── products — all 20 matching frontend products.js ──────
+    // ── products ─────────────────────────────────────────────
     await client.query(`
       INSERT INTO products (slug, name, price, description, category, img, artisan_id, added_at) VALUES
         ('bracelet-wood-silver',   'Handcrafted Beaded Bracelet',   39,  'Hand-beaded bracelet using natural stones.',       'Jewelry',     '/img/bracelet.png',               1, 20250901),

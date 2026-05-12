@@ -8,7 +8,7 @@ export default function Home() {
   const [activeSlide, setActiveSlide] = useState(0);
 
   useEffect(() => {
-    fetch("http://localhost:4000/products")
+    fetch("https://itech3208-urban-artisans.onrender.com/products")
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.error("Failed to fetch products:", err));

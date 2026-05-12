@@ -46,7 +46,7 @@ export default function Checkout() {
 
     try {
       // save the order to the database
-      const res = await fetch("http://localhost:4000/orders", {
+      const res = await fetch("https://itech3208-urban-artisans.onrender.com/orders", {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
         body:    JSON.stringify(order),
