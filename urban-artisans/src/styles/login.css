@@ -1,0 +1,201 @@
+/* Login page — earthy, artisan feel matching the shop */
+
+.login-page {
+  min-height: 100vh;
+  background: var(--clay-beige, #f5ede3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  font-family: "Georgia", serif;
+}
+
+.login-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2.8rem 2.4rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e8ddd4;
+}
+
+/* re-use the navbar brand colours */
+.login-brand {
+  text-align: center;
+  margin-bottom: 1.6rem;
+}
+
+.login-logo {
+  text-decoration: none;
+  display: inline-flex;
+  gap: 4px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.brand-urban {
+  color: #2c2c2c;
+}
+
+.brand-artisans {
+  color: #8b5e3c;
+}
+
+.login-heading {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #2c2c2c;
+  margin: 0 0 0.3rem;
+}
+
+.login-sub {
+  text-align: center;
+  color: #888;
+  font-size: 0.9rem;
+  margin: 0 0 1.8rem;
+  font-family: sans-serif;
+}
+
+/* error banner */
+.login-error {
+  background: #fff0f0;
+  border: 1px solid #f5c6c6;
+  color: #c0392b;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  font-size: 0.88rem;
+  margin-bottom: 1rem;
+  font-family: sans-serif;
+}
+
+/* form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.field-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #444;
+  font-family: sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.field-input {
+  border: 1.5px solid #d4c4b6;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  color: #2c2c2c;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: sans-serif;
+  background: #fdfaf8;
+}
+
+.field-input:focus {
+  border-color: #8b5e3c;
+  box-shadow: 0 0 0 3px rgba(139, 94, 60, 0.12);
+  background: #fff;
+}
+
+.field-input::placeholder {
+  color: #bbb;
+}
+
+/* demo credentials hint */
+.login-hint {
+  font-size: 0.8rem;
+  color: #999;
+  font-family: sans-serif;
+  background: #f9f5f1;
+  border-radius: 8px;
+  padding: 0.5rem 0.8rem;
+  border: 1px dashed #ddd;
+}
+
+.login-hint code {
+  color: #8b5e3c;
+  font-weight: 600;
+}
+
+/* submit button */
+.login-btn {
+  background: #2c2c2c;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.85rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  font-family: sans-serif;
+  letter-spacing: 0.02em;
+  margin-top: 0.3rem;
+}
+
+.login-btn:hover:not(:disabled) {
+  background: #8b5e3c;
+}
+
+.login-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.login-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* back link */
+.login-back {
+  text-align: center;
+  margin-top: 1.4rem;
+  font-size: 0.88rem;
+  font-family: sans-serif;
+}
+
+.login-back .link {
+  color: #8b5e3c;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-back .link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 2rem 1.2rem;
+  }
+}
+.login-register {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.88rem;
+  font-family: sans-serif;
+  color: #888;
+}
+ 
+.login-register .link {
+  color: #8b5e3c;
+  text-decoration: none;
+  font-weight: 500;
+}
+ 
+.login-register .link:hover {
+  text-decoration: underline;
+}
