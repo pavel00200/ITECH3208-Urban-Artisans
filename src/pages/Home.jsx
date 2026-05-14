@@ -46,17 +46,27 @@ export default function Home() {
         {slides.length > 0 && (
           <>
             <div className="hero-feature-image">
-              <img src={slides[activeSlide].img} alt={slides[activeSlide].name} />
+              <img
+                src={slides[activeSlide].img}
+                alt={slides[activeSlide].name}
+              />
             </div>
 
             <div className="hero-glass-card hero-animate">
-              <p className="hero-badge">New Arrival • Handmade • Unique</p>
+              <p className="hero-badge">
+                Handmade Crafts • Artisan Products • Unique Collection
+              </p>
 
-              <h1>{slides[activeSlide].name}</h1>
+              <h1>
+                Handmade Artisan Crafts & Unique Handmade Products
+              </h1>
 
               <p className="hero-text">
-                Discover exclusive handmade items crafted by independent
-                artisans with care, detail and creativity.
+                Discover handcrafted jewelry, artisan home decor, handmade
+                clothing, and unique accessories created by skilled independent
+                artisans. Urban Artisans offers premium handmade products
+                designed with creativity, craftsmanship, and authentic artistic
+                detail.
               </p>
 
               <div className="hero-actions">
@@ -95,8 +105,17 @@ export default function Home() {
       </section>
 
       <div className="home-section-intro">
-        <p>Featured Categories</p>
-        <h2>Shop by handmade collections</h2>
+        <p>Featured Handmade Categories</p>
+
+        <h2>
+          Shop artisan jewelry, handmade home decor, clothing and accessories
+        </h2>
+
+        <p>
+          Explore handcrafted collections featuring artisan jewelry, premium
+          home decor, handmade fashion, and creative accessories made by
+          independent artisans using authentic craftsmanship techniques.
+        </p>
       </div>
 
       <CategorySection
