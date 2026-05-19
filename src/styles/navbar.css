@@ -398,3 +398,46 @@
     gap: 10px;
   }
 }
+@media (max-width: 480px) {
+  .nav {
+    padding: 0.6rem 0.8rem;
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .brand {
+    font-size: 1.05rem;
+    white-space: nowrap;
+  }
+
+  .nav-actions {
+    gap: 6px;
+  }
+
+  .nav-link {
+    display: none;
+  }
+
+  .login-btn,
+  .register-btn {
+    display: none;
+  }
+
+  .cart-icon,
+  .cart-link {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+  }
+
+  .hamburger,
+  .menu-btn {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+}

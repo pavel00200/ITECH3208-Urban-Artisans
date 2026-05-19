@@ -75,7 +75,7 @@ export default function Navbar() {
                       📦 Purchases
                     </Link>
 
-                    <Link to="/shop" onClick={() => setProfileOpen(false)}>
+                    <Link to="/wishlist" onClick={() => setProfileOpen(false)}>
                       ♡ Wishlist
                     </Link>
 
@@ -122,6 +122,7 @@ export default function Navbar() {
         <nav className="drawer-nav">
           <Link to="/" onClick={() => setOpen(false)}>🏠 Home</Link>
           <Link to="/shop" onClick={() => setOpen(false)}>🛍️ Shop All</Link>
+          <Link to="/wishlist" onClick={() => setOpen(false)}>♡ Wishlist</Link>
           <Link to="/shop" onClick={() => setOpen(false)}>💍 Jewelry</Link>
           <Link to="/shop" onClick={() => setOpen(false)}>🏡 Home Decor</Link>
           <Link to="/shop" onClick={() => setOpen(false)}>👗 Clothing</Link>

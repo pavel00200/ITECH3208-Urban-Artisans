@@ -4,8 +4,9 @@
 
 .cart-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
   gap: 2rem;
+  align-items: start;
 }
 
 .cart-list {
@@ -16,7 +17,8 @@
 
 .cart-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  gap: 1rem;
   border-bottom: 1px solid #ddd;
   padding: 1rem 0;
   position: relative;
@@ -27,16 +29,18 @@
   height: 100px;
   object-fit: cover;
   border-radius: 8px;
-  margin-right: 1rem;
+  flex-shrink: 0;
 }
 
 .cart-info {
-  flex-grow: 1;
+  flex: 1;
+  min-width: 0;
 }
 
 .cart-info h3 {
   margin: 0;
   font-size: 1.2rem;
+  line-height: 1.25;
 }
 
 .cart-option {
@@ -68,17 +72,21 @@
   margin-top: 0;
 }
 
-.btn-checkout {
+.btn-checkout,
+.btn-clear {
   display: block;
   width: 100%;
   padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-checkout {
   margin-top: 1rem;
   background: #222;
   color: #fff;
-  border: none;
-  border-radius: 6px;
   font-size: 1rem;
-  cursor: pointer;
 }
 
 .btn-checkout:hover {
@@ -86,28 +94,17 @@
 }
 
 .btn-clear {
-  display: block;
-  width: 100%;
   margin-top: 0.5rem;
-  padding: 0.75rem;
   background: #eee;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
 }
 
 .btn-clear:hover {
   background: #ddd;
 }
 
-/* Empty cart */
 .cart-empty {
   text-align: center;
   padding: 3rem;
-}
-
-.cart-empty h2 {
-  margin-bottom: 1rem;
 }
 
 .btn {
@@ -119,9 +116,6 @@
   text-decoration: none;
 }
 
-.btn:hover {
-  background: #444;
-}
 .cart-qty-row {
   display: flex;
   align-items: center;
@@ -139,12 +133,49 @@
   cursor: pointer;
 }
 
-.cart-qty-btn:hover {
-  background: #f5eee7;
-}
-
 .cart-qty-value {
   min-width: 24px;
   text-align: center;
   font-weight: 700;
+}
+
+/* Mobile fix */
+@media (max-width: 768px) {
+  .cart-page {
+    padding: 1rem;
+  }
+
+  .cart-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .cart-summary {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .cart-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 10px;
+  }
+
+  .cart-img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .cart-info h3 {
+    font-size: 1rem;
+  }
+
+  .cart-qty-row {
+    flex-wrap: wrap;
+  }
+
+  .btn-remove {
+    font-size: 1rem;
+  }
 }
