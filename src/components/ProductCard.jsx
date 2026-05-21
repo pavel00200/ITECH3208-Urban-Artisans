@@ -8,22 +8,29 @@ export default function ProductCard({
   name,
   price
 }) {
+
   return (
+
     <Link
-      to={`/product/${slug || id}`}
+      to={`/product/${id}-${slug}`}
       className="block"
     >
+
       <article className="card hover:shadow-lg transition">
+
         <div className="thumb">
+
           <img
             src={img}
             alt={`${name} handmade artisan product`}
             loading="lazy"
             decoding="async"
           />
+
         </div>
 
         <div className="meta">
+
           <p className="name">
             {name}
           </p>
@@ -31,8 +38,11 @@ export default function ProductCard({
           <span className="price">
             ${price}
           </span>
+
         </div>
+
       </article>
+
     </Link>
   );
 }

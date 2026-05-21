@@ -11,11 +11,13 @@ function useClickAway(ref, onAway) {
     };
 
     document.addEventListener("mousedown", h);
+
     return () => document.removeEventListener("mousedown", h);
   }, [ref, onAway]);
 }
 
 export default function Shop() {
+
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState(["All"]);
   const [activeCat, setActiveCat] = useState("All");
@@ -33,30 +35,54 @@ export default function Shop() {
   useClickAway(sortRef, () => setShowSort(false));
 
   useEffect(() => {
+
     fetch("https://itech3208-urban-artisans.onrender.com/products")
+
       .then((res) => {
+
         if (!res.ok) {
           throw new Error("Failed to load products");
         }
+
         return res.json();
       })
+
       .then((data) => {
+
+        console.log("PRODUCT DATA:", data);
+
         setProducts(data);
-        const cats = Array.from(new Set(data.map((p) => p.category))).sort();
+
+        const cats = Array.from(
+          new Set(data.map((p) => p.category))
+        ).sort();
+
         setCategories(["All", ...cats]);
       })
+
       .catch((err) => {
+
         console.error(err);
-        setError("Products could not be loaded. Please try again later.");
+
+        setError(
+          "Products could not be loaded. Please try again later."
+        );
       })
+
       .finally(() => setLoading(false));
+
   }, []);
 
   const searchText = q.trim().toLowerCase();
 
   const filtered = products
-    .filter((p) => activeCat === "All" || p.category === activeCat)
+
+    .filter(
+      (p) => activeCat === "All" || p.category === activeCat
+    )
+
     .filter((p) => {
+
       if (!searchText) return true;
 
       const name = p.name?.toLowerCase() || "";
@@ -71,9 +97,19 @@ export default function Shop() {
     });
 
   const sorted = [...filtered].sort((a, b) => {
-    if (sort === "price-asc") return a.price - b.price;
-    if (sort === "price-desc") return b.price - a.price;
-    if (sort === "newest") return new Date(b.added_at) - new Date(a.added_at);
+
+    if (sort === "price-asc") {
+      return a.price - b.price;
+    }
+
+    if (sort === "price-desc") {
+      return b.price - a.price;
+    }
+
+    if (sort === "newest") {
+      return new Date(b.added_at) - new Date(a.added_at);
+    }
+
     return 0;
   });
 
@@ -99,8 +135,11 @@ export default function Shop() {
 
   return (
     <main className="shop">
+
       <div className="shop-toolbar">
+
         <div className="toolbar-left">
+
           <button
             className="btn-pill"
             onClick={() => {
@@ -119,14 +158,21 @@ export default function Shop() {
             ref={filterRef}
             hidden={!showFilter}
           >
-            <div className="dropdown-head">Categories</div>
+
+            <div className="dropdown-head">
+              Categories
+            </div>
 
             <div className="dropdown-list">
+
               {categories.map((cat) => (
+
                 <button
                   key={cat}
                   className={`dropdown-item ${
-                    activeCat === cat ? "is-active" : ""
+                    activeCat === cat
+                      ? "is-active"
+                      : ""
                   }`}
                   onClick={() => {
                     setActiveCat(cat);
@@ -135,7 +181,9 @@ export default function Shop() {
                 >
                   {cat}
                 </button>
+
               ))}
+
             </div>
           </div>
 
@@ -148,7 +196,10 @@ export default function Shop() {
             aria-expanded={showSort}
             aria-controls="sort-dropdown"
           >
-            Sort <span className="caret">{showSort ? "▴" : "▾"}</span>
+            Sort
+            <span className="caret">
+              {showSort ? "▴" : "▾"}
+            </span>
           </button>
 
           <div
@@ -157,12 +208,18 @@ export default function Shop() {
             ref={sortRef}
             hidden={!showSort}
           >
-            <div className="dropdown-head">Sort by</div>
+
+            <div className="dropdown-head">
+              Sort by
+            </div>
 
             <div className="dropdown-list">
+
               <button
                 className={`dropdown-item ${
-                  sort === "popular" ? "is-active" : ""
+                  sort === "popular"
+                    ? "is-active"
+                    : ""
                 }`}
                 onClick={() => {
                   setSort("popular");
@@ -174,7 +231,9 @@ export default function Shop() {
 
               <button
                 className={`dropdown-item ${
-                  sort === "price-asc" ? "is-active" : ""
+                  sort === "price-asc"
+                    ? "is-active"
+                    : ""
                 }`}
                 onClick={() => {
                   setSort("price-asc");
@@ -186,7 +245,9 @@ export default function Shop() {
 
               <button
                 className={`dropdown-item ${
-                  sort === "price-desc" ? "is-active" : ""
+                  sort === "price-desc"
+                    ? "is-active"
+                    : ""
                 }`}
                 onClick={() => {
                   setSort("price-desc");
@@ -198,7 +259,9 @@ export default function Shop() {
 
               <button
                 className={`dropdown-item ${
-                  sort === "newest" ? "is-active" : ""
+                  sort === "newest"
+                    ? "is-active"
+                    : ""
                 }`}
                 onClick={() => {
                   setSort("newest");
@@ -207,12 +270,15 @@ export default function Shop() {
               >
                 Newest Arrivals
               </button>
+
             </div>
           </div>
         </div>
 
         <div className="toolbar-search">
+
           <div className="search-wrap">
+
             <input
               className="search-input"
               placeholder="Search products..."
@@ -221,6 +287,7 @@ export default function Shop() {
             />
 
             {q && (
+
               <button
                 className="search-clear"
                 onClick={() => setQ("")}
@@ -228,27 +295,47 @@ export default function Shop() {
               >
                 ×
               </button>
+
             )}
+
           </div>
         </div>
       </div>
 
       <header className="shop-header">
+
         <h1>{activeCat}</h1>
-        <p className="muted">{sorted.length} items</p>
+
+        <p className="muted">
+          {sorted.length} items
+        </p>
+
       </header>
 
       {sorted.length === 0 ? (
+
         <div className="empty-state">
-          <p>No items found. Try a different category or search term.</p>
+          <p>
+            No items found. Try a different category or
+            search term.
+          </p>
         </div>
+
       ) : (
+
         <section className="grid">
+
           {sorted.map((p) => (
-            <ProductCard key={p.id} {...p} />
+            <ProductCard
+              key={p.id}
+              {...p}
+            />
           ))}
+
         </section>
+
       )}
+
     </main>
   );
 }

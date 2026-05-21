@@ -1,71 +1,132 @@
-import { Router } from "express";
-import pool from "../db/database.js";
+import { useParams, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useCart } from "../context/CartContext";
 
-const router = Router();
+export default function ProductDetail() {
 
-// GET /products
-// returns all products sorted newest first
-router.get("/", async (req, res) => {
-  const { category } = req.query;
+  const { slug } = useParams();
 
-  try {
-    let result;
+  const { addToCart } = useCart();
 
-    if (category && category !== "All") {
-      result = await pool.query(
-        "SELECT * FROM products WHERE category = $1 ORDER BY added_at DESC",
-        [category]
-      );
-    } else {
-      result = await pool.query(
-        "SELECT * FROM products ORDER BY added_at DESC"
-      );
-    }
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [qty, setQty] = useState(1);
+  const [error, setError] = useState("");
 
-    res.json(result.rows);
+  useEffect(() => {
 
-  } catch (err) {
-    console.error("Get products error:", err.message);
-    res.status(500).json({ message: "Server error." });
-  }
-});
-// GET /products/:id
-router.get("/:id", async (req, res) => {
-  try {
-    const result = await pool.query(
-      "SELECT * FROM products WHERE id = $1",
-      [req.params.id]
+    setLoading(true);
+    setError("");
+
+    console.log("CURRENT SLUG:", slug);
+
+    fetch(
+      `https://itech3208-urban-artisans.onrender.com/products/${slug}`
+    )
+
+      .then((res) => {
+
+        if (!res.ok) {
+          throw new Error("Product not found");
+        }
+
+        return res.json();
+      })
+
+      .then((data) => {
+
+        console.log("PRODUCT:", data);
+
+        setProduct(data);
+      })
+
+      .catch((err) => {
+
+        console.error(err);
+
+        setError("Product not found");
+      })
+
+      .finally(() => setLoading(false));
+
+  }, [slug]);
+
+  const handleAddToCart = () => {
+    addToCart(product, qty);
+  };
+
+  if (loading) {
+    return (
+      <div className="product-message">
+        Loading...
+      </div>
     );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Product not found." });
-    }
-
-    res.json(result.rows[0]);
-
-  } catch (err) {
-    console.error("Get product error:", err.message);
-    res.status(500).json({ message: "Server error." });
   }
-});
-// GET /products/:slug
-router.get("/:slug", async (req, res) => {
-  try {
-    const result = await pool.query(
-      "SELECT * FROM products WHERE slug = $1",
-      [req.params.slug]
+
+  if (error) {
+    return (
+      <div className="product-message">
+        {error}
+      </div>
     );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Product not found." });
-    }
-
-    res.json(result.rows[0]);
-
-  } catch (err) {
-    console.error("Get product error:", err.message);
-    res.status(500).json({ message: "Server error." });
   }
-});
 
-export default router;
+  if (!product) {
+    return (
+      <div className="product-message">
+        Product not found
+      </div>
+    );
+  }
+
+  return (
+    <main className="product-detail-page">
+
+      <section className="product-detail-card">
+
+        <div className="product-image-box">
+          <img
+            src={product.img}
+            alt={`${product.name} handmade artisan product`}
+          />
+        </div>
+
+        <div className="product-info-box">
+
+          <p className="product-category">
+            {product.category}
+          </p>
+
+          <h1>
+            {product.name}
+          </h1>
+
+          <p className="product-price">
+            ${product.price}
+          </p>
+
+          <p className="product-short-desc">
+            {product.description}
+          </p>
+
+          <button
+            className="add-to-cart-btn"
+            onClick={handleAddToCart}
+          >
+            Add To Cart
+          </button>
+
+          <Link
+            to="/shop"
+            className="back-shop-link"
+          >
+            ← Back to Shop
+          </Link>
+
+        </div>
+
+      </section>
+
+    </main>
+  );
+}

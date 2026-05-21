@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   HashRouter,
   Routes,
@@ -23,11 +24,15 @@ import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
+
   return (
+
     <HashRouter>
+
       <Navbar />
 
       <Routes>
+
         <Route
           path="/"
           element={<Home />}
@@ -95,9 +100,11 @@ export default function App() {
           path="*"
           element={<Navigate to="/" replace />}
         />
+
       </Routes>
 
       <Footer />
+
     </HashRouter>
   );
 }

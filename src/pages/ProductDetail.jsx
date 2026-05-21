@@ -3,7 +3,14 @@ import { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
 
 export default function ProductDetail() {
-  const { id } = useParams();
+
+  const { slug } = useParams();
+
+  // Extract ID from URL
+  // Example:
+  // 5-wall-african-blue -> 5
+  const productId = slug.split("-")[0];
+
   const { addToCart } = useCart();
 
   const [product, setProduct] = useState(null);
@@ -14,30 +21,49 @@ export default function ProductDetail() {
   const [wishAdded, setWishAdded] = useState(false);
 
   useEffect(() => {
+
     setLoading(true);
     setError("");
 
-    fetch(`https://itech3208-urban-artisans.onrender.com/products/${id}`)
+    fetch(
+      `https://itech3208-urban-artisans.onrender.com/products/${productId}`
+    )
+
       .then((res) => {
-        if (!res.ok) throw new Error("Product not found");
+
+        if (!res.ok) {
+          throw new Error("Product not found");
+        }
+
         return res.json();
       })
+
       .then((data) => {
+
         setProduct(data);
         setQty(1);
+
       })
+
       .catch((err) => {
+
         console.error(err);
+
         setError("Product not found");
         setProduct(null);
+
       })
+
       .finally(() => setLoading(false));
-  }, [id]);
+
+  }, [productId]);
 
   const handleAddToCart = () => {
+
     if (!product || adding) return;
 
     setAdding(true);
+
     addToCart(product, qty);
 
     setTimeout(() => {
@@ -46,20 +72,31 @@ export default function ProductDetail() {
   };
 
   const handleWishlist = () => {
+
     if (!product) return;
 
-    const currentUser = JSON.parse(localStorage.getItem("user"));
+    const currentUser =
+      JSON.parse(localStorage.getItem("user"));
 
     const wishlistKey = currentUser
       ? `wishlist_${currentUser.email || currentUser.name}`
       : "wishlist_guest";
 
-    const wishlist = JSON.parse(localStorage.getItem(wishlistKey)) || [];
-    const exists = wishlist.find((item) => item.id === product.id);
+    const wishlist =
+      JSON.parse(localStorage.getItem(wishlistKey)) || [];
+
+    const exists = wishlist.find(
+      (item) => item.id === product.id
+    );
 
     if (!exists) {
+
       wishlist.push(product);
-      localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
+
+      localStorage.setItem(
+        wishlistKey,
+        JSON.stringify(wishlist)
+      );
     }
 
     setWishAdded(true);
@@ -70,70 +107,107 @@ export default function ProductDetail() {
   };
 
   const handleImageError = (e) => {
-    e.currentTarget.src = "/placeholder-product.png";
+    e.currentTarget.src =
+      "/placeholder-product.png";
   };
 
   if (loading) {
-    return <div className="product-message">Loading...</div>;
+    return (
+      <div className="product-message">
+        Loading...
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="product-message">{error}</div>;
+    return (
+      <div className="product-message">
+        {error}
+      </div>
+    );
   }
 
   if (!product) {
-    return <div className="product-message">Product not found</div>;
+    return (
+      <div className="product-message">
+        Product not found
+      </div>
+    );
   }
 
   return (
+
     <main className="product-detail-page">
+
       <section className="product-detail-card">
+
         <div className="product-image-box">
-<img
-  src={product.img}
-  alt={`${product.name} handmade artisan product`}
-  loading="eager"
-  decoding="async"
-  width="600"
-  height="600"
-  onError={handleImageError}
-/>
-</div>
+
+          <img
+            src={product.img}
+            alt={`${product.name} handmade artisan product`}
+            loading="eager"
+            decoding="async"
+            width="600"
+            height="600"
+            onError={handleImageError}
+          />
+
+        </div>
 
         <div className="product-info-box">
-          <p className="product-category">{product.category}</p>
 
-          <h1>{product.name}</h1>
+          <p className="product-category">
+            {product.category}
+          </p>
 
-          <p className="product-price">${product.price}</p>
+          <h1>
+            {product.name}
+          </h1>
+
+          <p className="product-price">
+            ${product.price}
+          </p>
 
           <p className="product-short-desc">
             {product.description}
           </p>
 
           <div className="qty-box">
-            <button onClick={() => setQty(qty > 1 ? qty - 1 : 1)}>
+
+            <button
+              onClick={() =>
+                setQty(qty > 1 ? qty - 1 : 1)
+              }
+            >
               -
             </button>
 
             <span>{qty}</span>
 
-            <button onClick={() => setQty(qty + 1)}>
+            <button
+              onClick={() => setQty(qty + 1)}
+            >
               +
             </button>
+
           </div>
 
           <button
             className="add-to-cart-btn"
             onClick={handleAddToCart}
             disabled={adding}
+            aria-label="Add product to cart"
           >
-            {adding ? "Added!" : "Add to Cart"}
+            {adding
+              ? "Added!"
+              : "Add to Cart"}
           </button>
 
           <button
             className="wishlist-btn"
             onClick={handleWishlist}
+            aria-label="Add product to wishlist"
           >
             {wishAdded
               ? "♥ Added to Wishlist"
@@ -141,18 +215,29 @@ export default function ProductDetail() {
           </button>
 
           <div className="product-info-note">
-            <strong>About this item</strong>
+
+            <strong>
+              About this item
+            </strong>
 
             <p>
-              {product.about || product.description}
+              {product.about ||
+                product.description}
             </p>
+
           </div>
 
-          <Link to="/shop" className="back-shop-link">
+          <Link
+            to="/shop"
+            className="back-shop-link"
+          >
             ← Back to Shop
           </Link>
+
         </div>
+
       </section>
+
     </main>
   );
 }
