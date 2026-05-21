@@ -19,64 +19,34 @@ import OrderConfirmation from "./pages/OrderConfirmation";
 import ManageAccount from "./pages/ManageAccount";
 import Wishlist from "./pages/Wishlist";
 
+import BuyerFAQ from "./pages/BuyerFAQ";
+import SellerFAQ from "./pages/SellerFAQ";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
-
   return (
-
     <HashRouter>
-
       <Navbar />
 
       <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/product/:slug" element={<ProductDetail />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/order-confirmation" element={<OrderConfirmation />} />
+        <Route path="/wishlist" element={<Wishlist />} />
 
-        <Route
-          path="/"
-          element={<Home />}
-        />
+        <Route path="/buyer-faq" element={<BuyerFAQ />} />
+        <Route path="/seller-faq" element={<SellerFAQ />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
 
-        <Route
-          path="/shop"
-          element={<Shop />}
-        />
-
-        <Route
-          path="/product/:slug"
-          element={<ProductDetail />}
-        />
-
-        <Route
-          path="/cart"
-          element={<Cart />}
-        />
-
-        <Route
-          path="/orders"
-          element={<Orders />}
-        />
-
-        <Route
-          path="/order-confirmation"
-          element={<OrderConfirmation />}
-        />
-
-        <Route
-          path="/wishlist"
-          element={<Wishlist />}
-        />
-
-        <Route
-          path="/login"
-          element={<Login />}
-        />
-
-        <Route
-          path="/register"
-          element={<Register />}
-        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         <Route
           path="/account"
@@ -96,15 +66,10 @@ export default function App() {
           }
         />
 
-        <Route
-          path="*"
-          element={<Navigate to="/" replace />}
-        />
-
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
       <Footer />
-
     </HashRouter>
   );
 }

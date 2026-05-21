@@ -8,18 +8,9 @@ export default function Footer() {
       <div className="foot-columns">
 
         <div>
-          <h4>Shop</h4>
-          <Link to="/shop">Jewelry</Link>
-          <Link to="/shop">Home Decor</Link>
-          <Link to="/shop">Clothing</Link>
-          <Link to="/shop">Sculpture</Link>
-          <Link to="/shop">Accessories</Link>
-        </div>
-
-        <div>
           <h4>Info</h4>
-          <Link to="/contact">Buyer FAQ</Link>
-          <Link to="/contact">Seller FAQ</Link>
+          <Link to="/buyer-faq">Buyer FAQ</Link>
+          <Link to="/seller-faq">Seller FAQ</Link>
           <Link to="/privacy">Privacy Policy</Link>
         </div>
 

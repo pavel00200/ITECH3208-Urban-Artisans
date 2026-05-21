@@ -1,0 +1,22 @@
+.info-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 70px 22px;
+  color: #2d241f;
+}
+
+.info-page h1 {
+  font-size: 42px;
+  margin-bottom: 28px;
+}
+
+.info-page h3 {
+  margin-top: 26px;
+  color: #8b5e3c;
+}
+
+.info-page p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #5e5149;
+}
