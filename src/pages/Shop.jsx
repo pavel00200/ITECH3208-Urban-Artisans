@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard.jsx";
 import "../styles/shop.css";
 
@@ -26,6 +27,9 @@ export default function Shop() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryFromUrl = searchParams.get("category");
+
   const filterRef = useRef(null);
   const sortRef = useRef(null);
 
@@ -42,7 +46,11 @@ export default function Shop() {
       })
       .then((data) => {
         setProducts(data);
-        const cats = Array.from(new Set(data.map((p) => p.category))).sort();
+
+        const cats = Array.from(
+          new Set(data.map((p) => p.category).filter(Boolean))
+        ).sort();
+
         setCategories(["All", ...cats]);
       })
       .catch((err) => {
@@ -52,10 +60,36 @@ export default function Shop() {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    if (categoryFromUrl) {
+      setActiveCat(categoryFromUrl);
+    } else {
+      setActiveCat("All");
+    }
+  }, [categoryFromUrl]);
+
+  function handleCategoryChange(cat) {
+    setActiveCat(cat);
+    setShowFilter(false);
+
+    if (cat === "All") {
+      setSearchParams({});
+    } else {
+      setSearchParams({ category: cat });
+    }
+  }
+
   const searchText = q.trim().toLowerCase();
 
   const filtered = products
-    .filter((p) => activeCat === "All" || p.category === activeCat)
+    .filter((p) => {
+      if (activeCat === "All") return true;
+
+      const productCategory = (p.category || "").toLowerCase();
+      const selectedCategory = activeCat.toLowerCase();
+
+      return productCategory === selectedCategory;
+    })
     .filter((p) => {
       if (!searchText) return true;
 
@@ -71,9 +105,15 @@ export default function Shop() {
     });
 
   const sorted = [...filtered].sort((a, b) => {
-    if (sort === "price-asc") return a.price - b.price;
-    if (sort === "price-desc") return b.price - a.price;
-    if (sort === "newest") return new Date(b.added_at) - new Date(a.added_at);
+    if (sort === "price-asc") return Number(a.price) - Number(b.price);
+    if (sort === "price-desc") return Number(b.price) - Number(a.price);
+
+    if (sort === "newest") {
+      const dateA = new Date(a.added_at || a.created_at || 0);
+      const dateB = new Date(b.added_at || b.created_at || 0);
+      return dateB - dateA;
+    }
+
     return 0;
   });
 
@@ -128,12 +168,9 @@ export default function Shop() {
                   className={`dropdown-item ${
                     activeCat === cat ? "is-active" : ""
                   }`}
-                  onClick={() => {
-                    setActiveCat(cat);
-                    setShowFilter(false);
-                  }}
+                  onClick={() => handleCategoryChange(cat)}
                 >
-                  {cat}
+                  {cat === "Jewelry" ? "Jewellery" : cat}
                 </button>
               ))}
             </div>
@@ -234,7 +271,7 @@ export default function Shop() {
       </div>
 
       <header className="shop-header">
-        <h1>{activeCat}</h1>
+        <h1>{activeCat === "Jewelry" ? "Jewellery" : activeCat}</h1>
         <p className="muted">{sorted.length} items</p>
       </header>
 

@@ -17,14 +17,50 @@ export default function Home() {
   const getCategoryProducts = (cat) =>
     products.filter((p) => p.category === cat).slice(0, 4);
 
-  const slides = products.slice(0, 4);
+  const slides = [
+    {
+      category: "Jewellery",
+      dbCategory: "Jewelry",
+      title: "Handcrafted Jewellery Collection",
+      text: "Explore unique handmade earrings, necklaces, bracelets and accessories created by independent artisans with careful detail and style.",
+      badge: "Featured Collection • Handmade Jewellery",
+      button: "View Jewellery",
+    },
+    {
+      category: "Home Decor",
+      dbCategory: "Home Decor",
+      title: "Artisan Home Decor Pieces",
+      text: "Discover handcrafted bowls, wall decor and decorative pieces designed to bring warmth, creativity and character into your home.",
+      badge: "Featured Collection • Home Decor",
+      button: "View Home Decor",
+    },
+    {
+      category: "Clothing",
+      dbCategory: "Clothing",
+      title: "Handmade Clothing & Fashion",
+      text: "Shop handmade clothing pieces created with traditional patterns, soft fabrics and unique artisan design for everyday wear.",
+      badge: "Featured Collection • Handmade Clothing",
+      button: "View Clothing",
+    },
+    {
+      category: "Accessories",
+      dbCategory: "Accessories",
+      title: "Creative Handmade Accessories",
+      text: "Find handcrafted accessories made with creativity and care, including unique personal items designed by skilled artisans.",
+      badge: "Featured Collection • Accessories",
+      button: "View Accessories",
+    },
+  ];
+
+  const currentSlide = slides[activeSlide];
+
+  const slideProduct =
+    products.find((p) => p.category === currentSlide.dbCategory) || products[0];
 
   useEffect(() => {
-    if (slides.length === 0) return;
-
     const timer = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % slides.length);
-    }, 4500);
+    }, 6000);
 
     return () => clearInterval(timer);
   }, [slides.length]);
@@ -43,76 +79,77 @@ export default function Home() {
         <div className="hero-bg-circle circle-one"></div>
         <div className="hero-bg-circle circle-two"></div>
 
-        {slides.length > 0 && (
-          <>
-            <div className="hero-feature-image">
-              <img
-                src={slides[activeSlide].img}
-                alt={slides[activeSlide].name}
-              />
-            </div>
+        <div className="hero-content-wrap">
+          <div className="hero-glass-card hero-animate" key={activeSlide}>
+            <p className="hero-badge">{currentSlide.badge}</p>
 
-            <div className="hero-glass-card hero-animate">
-              <p className="hero-badge">
-                Handmade Crafts • Artisan Products • Unique Collection
-              </p>
+            <h1>{currentSlide.title}</h1>
 
-              <h1>
-                Handmade Artisan Crafts & Unique Handmade Products
-              </h1>
+            <p className="hero-text">{currentSlide.text}</p>
 
-              <p className="hero-text">
-                Discover handcrafted jewelry, artisan home decor, handmade
-                clothing, and unique accessories created by skilled independent
-                artisans. Urban Artisans offers premium handmade products
-                designed with creativity, craftsmanship, and authentic artistic
-                detail.
-              </p>
+            <div className="hero-actions">
+              <a
+                href={`#/shop?category=${currentSlide.dbCategory}`}
+                className="glass-btn primary"
+              >
+                {currentSlide.button}
+              </a>
 
-              <div className="hero-actions">
+              {slideProduct && (
                 <a
-                  href={`#/product/${slides[activeSlide].id}`}
-                  className="glass-btn primary"
+                  href={`#/product/${slideProduct.id}`}
+                  className="glass-btn secondary"
                 >
                   View Product
                 </a>
-
-                <a href="#/shop" className="glass-btn secondary">
-                  Shop Collection
-                </a>
-              </div>
+              )}
             </div>
+          </div>
 
-            <button className="hero-arrow left" onClick={prevSlide}>
-              ‹
-            </button>
-
-            <button className="hero-arrow right" onClick={nextSlide}>
-              ›
-            </button>
-
-            <div className="hero-dots">
-              {slides.map((_, index) => (
-                <button
-                  key={index}
-                  className={activeSlide === index ? "active" : ""}
-                  onClick={() => setActiveSlide(index)}
-                ></button>
-              ))}
+          {slideProduct && (
+            <div className="hero-feature-image" key={slideProduct.id}>
+              <img src={slideProduct.img} alt={slideProduct.name} />
             </div>
-          </>
-        )}
+          )}
+        </div>
+
+        <button
+          className="hero-arrow left"
+          onClick={prevSlide}
+          aria-label="Previous slide"
+        >
+          ‹
+        </button>
+
+        <button
+          className="hero-arrow right"
+          onClick={nextSlide}
+          aria-label="Next slide"
+        >
+          ›
+        </button>
+
+        <div className="hero-dots">
+          {slides.map((slide, index) => (
+            <button
+              key={slide.category}
+              className={activeSlide === index ? "active" : ""}
+              onClick={() => setActiveSlide(index)}
+              aria-label={`Show ${slide.category} slide`}
+            ></button>
+          ))}
+        </div>
       </section>
 
       <div className="home-section-intro">
         <p>Featured Handmade Categories</p>
 
         <h2>
-          Shop artisan jewelry, handmade home decor, clothing and accessories
+          Shop artisan jewellery, handmade home decor, clothing and accessories
         </h2>
 
         <p>
-          Explore handcrafted collections featuring artisan jewelry, premium
+          Explore handcrafted collections featuring artisan jewellery, premium
           home decor, handmade fashion, and creative accessories made by
           independent artisans using authentic craftsmanship techniques.
         </p>
@@ -131,7 +168,7 @@ export default function Home() {
       />
 
       <CategorySection
-        title="Jewelry"
+        title="Jewellery"
         bg="var(--sage-green)"
         products={getCategoryProducts("Jewelry")}
       />

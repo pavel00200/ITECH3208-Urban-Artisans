@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import "../styles/navbar.css";
@@ -11,8 +11,14 @@ export default function Navbar() {
   const { cart } = useCart();
   const { isLoggedIn, user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+
+  useEffect(() => {
+    setProfileOpen(false);
+    setOpen(false);
+  }, [location.pathname, location.search]);
 
   function handleLogout() {
     logout();
@@ -54,7 +60,11 @@ export default function Navbar() {
                   <span className="profile-avatar">
                     {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
                   </span>
-                  <span className="profile-name">{user?.name || "User"}</span>
+
+                  <span className="profile-name">
+                    {user?.name || "User"}
+                  </span>
+
                   <span className="profile-arrow">⌄</span>
                 </button>
 
@@ -62,7 +72,9 @@ export default function Navbar() {
                   <div className="profile-dropdown">
                     <div className="profile-card-head">
                       <div className="profile-big-avatar">
-                        {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
+                        {user?.name
+                          ? user.name.charAt(0).toUpperCase()
+                          : "U"}
                       </div>
 
                       <div>
@@ -71,23 +83,31 @@ export default function Navbar() {
                       </div>
                     </div>
 
-                    <Link to="/orders" onClick={() => setProfileOpen(false)}>
-                      📦 Purchases
-                    </Link>
-
-                    <Link to="/wishlist" onClick={() => setProfileOpen(false)}>
+                    <Link
+                      to="/wishlist"
+                      onClick={() => setProfileOpen(false)}
+                    >
                       ♡ Wishlist
                     </Link>
 
-                    <Link to="/cart" onClick={() => setProfileOpen(false)}>
+                    <Link
+                      to="/cart"
+                      onClick={() => setProfileOpen(false)}
+                    >
                       🛒 Cart
                     </Link>
 
-                    <Link to="/account" onClick={() => setProfileOpen(false)}>
+                    <Link
+                      to="/account"
+                      onClick={() => setProfileOpen(false)}
+                    >
                       ⚙️ Manage account
                     </Link>
 
-                    <button className="profile-logout" onClick={handleLogout}>
+                    <button
+                      className="profile-logout"
+                      onClick={handleLogout}
+                    >
                       Log out
                     </button>
                   </div>
@@ -95,14 +115,21 @@ export default function Navbar() {
               </div>
             ) : (
               <div className="nav-auth-group">
-                <Link to="/login" className="nav-login-btn">Login</Link>
-                <Link to="/register" className="nav-register-btn">Register</Link>
+                <Link to="/login" className="nav-login-btn">
+                  Login
+                </Link>
+
+                <Link to="/register" className="nav-register-btn">
+                  Register
+                </Link>
               </div>
             )}
 
             <Link to="/cart" className="cart-btn">
               🛒
-              {totalQty > 0 && <span className="cart-count">{totalQty}</span>}
+              {totalQty > 0 && (
+                <span className="cart-count">{totalQty}</span>
+              )}
             </Link>
           </div>
         </div>
@@ -116,26 +143,78 @@ export default function Navbar() {
       <aside className={`drawer ${open ? "open" : ""}`}>
         <div className="drawer-head">
           <h3>Menu</h3>
-          <button className="close" onClick={() => setOpen(false)}>×</button>
+
+          <button
+            className="close"
+            onClick={() => setOpen(false)}
+          >
+            ×
+          </button>
         </div>
 
         <nav className="drawer-nav">
-          <Link to="/" onClick={() => setOpen(false)}>🏠 Home</Link>
-          <Link to="/shop" onClick={() => setOpen(false)}>🛍️ Shop All</Link>
-          <Link to="/wishlist" onClick={() => setOpen(false)}>♡ Wishlist</Link>
-          <Link to="/shop" onClick={() => setOpen(false)}>💍 Jewelry</Link>
-          <Link to="/shop" onClick={() => setOpen(false)}>🏡 Home Decor</Link>
-          <Link to="/shop" onClick={() => setOpen(false)}>👗 Clothing</Link>
-          <Link to="/shop" onClick={() => setOpen(false)}>👜 Accessories</Link>
+          <Link to="/" onClick={() => setOpen(false)}>
+            🏠 Home
+          </Link>
+
+          <Link to="/shop" onClick={() => setOpen(false)}>
+            🛍️ Shop All
+          </Link>
+
+          <Link to="/wishlist" onClick={() => setOpen(false)}>
+            ♡ Wishlist
+          </Link>
+
+          <Link
+            to="/shop?category=Jewelry"
+            onClick={() => setOpen(false)}
+          >
+            💍 Jewellery
+          </Link>
+
+          <Link
+            to="/shop?category=Home Decor"
+            onClick={() => setOpen(false)}
+          >
+            🏡 Home Decor
+          </Link>
+
+          <Link
+            to="/shop?category=Clothing"
+            onClick={() => setOpen(false)}
+          >
+            👗 Clothing
+          </Link>
+
+          <Link
+            to="/shop?category=Accessories"
+            onClick={() => setOpen(false)}
+          >
+            👜 Accessories
+          </Link>
 
           {isLoggedIn ? (
-            <button className="drawer-logout-btn" onClick={handleLogout}>
+            <button
+              className="drawer-logout-btn"
+              onClick={handleLogout}
+            >
               🚪 Logout ({user?.name})
             </button>
           ) : (
             <>
-              <Link to="/login" onClick={() => setOpen(false)}>🔑 Login</Link>
-              <Link to="/register" onClick={() => setOpen(false)}>📝 Register</Link>
+              <Link
+                to="/login"
+                onClick={() => setOpen(false)}
+              >
+                🔑 Login
+              </Link>
+
+              <Link
+                to="/register"
+                onClick={() => setOpen(false)}
+              >
+                📝 Register
+              </Link>
             </>
           )}
         </nav>
