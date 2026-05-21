@@ -22,12 +22,15 @@ CREATE TABLE IF NOT EXISTS artisans (
 );
 
 -- products — items available in the shop
-CREATE TABLE IF NOT EXISTS products (
+DROP TABLE IF EXISTS products;
+
+CREATE TABLE products (
     id          SERIAL      PRIMARY KEY,
     slug        TEXT        NOT NULL UNIQUE,
     name        TEXT        NOT NULL,
     price       NUMERIC     NOT NULL,
     description TEXT,
+    about       TEXT,
     category    TEXT        NOT NULL,
     img         TEXT        NOT NULL,
     artisan_id  INTEGER     REFERENCES artisans(id),
