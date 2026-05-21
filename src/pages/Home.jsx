@@ -78,7 +78,7 @@ export default function Home() {
 
               <div className="hero-actions">
                 <a
-                  href={`#/product/${slides[activeSlide].id}`}
+                  href={`#/product/${slides[activeSlide].slug}`}
                   className="glass-btn primary"
                 >
                   View Product
