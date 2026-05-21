@@ -8,10 +8,15 @@ export default function Home() {
   const [activeSlide, setActiveSlide] = useState(0);
 
   useEffect(() => {
+
+    // Wake up Render backend faster
+    fetch("https://itech3208-urban-artisans.onrender.com");
+
     fetch("https://itech3208-urban-artisans.onrender.com/products")
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.error("Failed to fetch products:", err));
+
   }, []);
 
   const getCategoryProducts = (cat) =>
@@ -48,7 +53,9 @@ export default function Home() {
             <div className="hero-feature-image">
               <img
                 src={slides[activeSlide].img}
-                alt={slides[activeSlide].name}
+                alt={`${slides[activeSlide].name} handmade artisan product`}
+                loading="eager"
+                decoding="async"
               />
             </div>
 
@@ -118,11 +125,31 @@ export default function Home() {
         </p>
       </div>
 
+      <div className="category-seo-text">
+        <h3>Handmade Home Decor</h3>
+
+        <p>
+          Explore artisan home decor products including handmade wall art,
+          decorative bowls, sculptures, and unique interior pieces crafted by
+          skilled artisans using premium materials and authentic craftsmanship.
+        </p>
+      </div>
+
       <CategorySection
         title="Home Decor"
         bg="var(--sage-green)"
         products={getCategoryProducts("Home Decor")}
       />
+
+      <div className="category-seo-text">
+        <h3>Handmade Accessories</h3>
+
+        <p>
+          Discover handcrafted accessories designed with creativity,
+          premium materials, and artisan craftsmanship for everyday fashion,
+          gifting, and modern lifestyle styling.
+        </p>
+      </div>
 
       <CategorySection
         title="Accessories"
@@ -130,11 +157,31 @@ export default function Home() {
         products={getCategoryProducts("Accessories")}
       />
 
+      <div className="category-seo-text">
+        <h3>Artisan Jewelry Collection</h3>
+
+        <p>
+          Shop handmade jewelry including elegant earrings, necklaces,
+          bracelets, and artisan accessories designed with timeless style,
+          creative detailing, and handcrafted quality.
+        </p>
+      </div>
+
       <CategorySection
         title="Jewelry"
         bg="var(--sage-green)"
         products={getCategoryProducts("Jewelry")}
       />
+
+      <div className="category-seo-text">
+        <h3>Handmade Clothing</h3>
+
+        <p>
+          Browse handcrafted clothing collections featuring artisan robes,
+          cotton skirts, cultural fashion styles, and comfortable handmade
+          designs created for modern fashion lovers.
+        </p>
+      </div>
 
       <CategorySection
         title="Clothing"

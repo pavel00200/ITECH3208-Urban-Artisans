@@ -73,21 +73,32 @@ export default function ProductDetail() {
     e.currentTarget.src = "/placeholder-product.png";
   };
 
-  if (loading) return <div className="product-message">Loading...</div>;
-  if (error) return <div className="product-message">{error}</div>;
-  if (!product) return <div className="product-message">Product not found</div>;
+  if (loading) {
+    return <div className="product-message">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="product-message">{error}</div>;
+  }
+
+  if (!product) {
+    return <div className="product-message">Product not found</div>;
+  }
 
   return (
     <main className="product-detail-page">
       <section className="product-detail-card">
         <div className="product-image-box">
-          <img
-            src={product.img}
-            alt={product.name}
-            loading="lazy"
-            onError={handleImageError}
-          />
-        </div>
+<img
+  src={product.img}
+  alt={`${product.name} handmade artisan product`}
+  loading="eager"
+  decoding="async"
+  width="600"
+  height="600"
+  onError={handleImageError}
+/>
+</div>
 
         <div className="product-info-box">
           <p className="product-category">{product.category}</p>
@@ -96,7 +107,9 @@ export default function ProductDetail() {
 
           <p className="product-price">${product.price}</p>
 
-          <p className="product-short-desc">{product.description}</p>
+          <p className="product-short-desc">
+            {product.description}
+          </p>
 
           <div className="qty-box">
             <button onClick={() => setQty(qty > 1 ? qty - 1 : 1)}>
@@ -118,13 +131,21 @@ export default function ProductDetail() {
             {adding ? "Added!" : "Add to Cart"}
           </button>
 
-          <button className="wishlist-btn" onClick={handleWishlist}>
-            {wishAdded ? "♥ Added to Wishlist" : "♡ Add to Wishlist"}
+          <button
+            className="wishlist-btn"
+            onClick={handleWishlist}
+          >
+            {wishAdded
+              ? "♥ Added to Wishlist"
+              : "♡ Add to Wishlist"}
           </button>
 
           <div className="product-info-note">
             <strong>About this item</strong>
-            <p>{product.description}</p>
+
+            <p>
+              {product.about || product.description}
+            </p>
           </div>
 
           <Link to="/shop" className="back-shop-link">
