@@ -38,7 +38,7 @@ export default function Shop() {
   useClickAway(sortRef, () => setShowSort(false));
 
   useEffect(() => {
-    fetch("https://itech3208-urban-artisans.onrender.com/products")
+    fetch("https://urban-artisans-api.onrender.com/products")
       .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to load products");

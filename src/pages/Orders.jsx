@@ -21,7 +21,7 @@ export default function Orders() {
       }
 
       try {
-        const res = await fetch(`https://itech3208-urban-artisans.onrender.com/orders/${user.id}`);
+        const res = await fetch(`https://urban-artisans-api.onrender.com/orders/${user.id}`);
         if (!res.ok) throw new Error("Failed to fetch orders");
         const data = await res.json();
         setOrders(data); // database orders, newest first

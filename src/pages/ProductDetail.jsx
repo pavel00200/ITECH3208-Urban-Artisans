@@ -26,7 +26,7 @@ export default function ProductDetail() {
     setError("");
 
     fetch(
-      `https://itech3208-urban-artisans.onrender.com/products/${productId}`
+      `https://urban-artisans-api.onrender.com/products/${productId}`
     )
 
       .then((res) => {
