@@ -1,132 +1,58 @@
-import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useCart } from "../context/CartContext";
+import express from "express";
+import pool from "../db/database.js";
 
-export default function ProductDetail() {
+const router = express.Router();
 
-  const { slug } = useParams();
-
-  const { addToCart } = useCart();
-
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [qty, setQty] = useState(1);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-
-    setLoading(true);
-    setError("");
-
-    console.log("CURRENT SLUG:", slug);
-
-    fetch(
-      `https://itech3208-urban-artisans.onrender.com/products/${slug}`
-    )
-
-      .then((res) => {
-
-        if (!res.ok) {
-          throw new Error("Product not found");
-        }
-
-        return res.json();
-      })
-
-      .then((data) => {
-
-        console.log("PRODUCT:", data);
-
-        setProduct(data);
-      })
-
-      .catch((err) => {
-
-        console.error(err);
-
-        setError("Product not found");
-      })
-
-      .finally(() => setLoading(false));
-
-  }, [slug]);
-
-  const handleAddToCart = () => {
-    addToCart(product, qty);
-  };
-
-  if (loading) {
-    return (
-      <div className="product-message">
-        Loading...
-      </div>
+// Get all products
+router.get("/", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM products ORDER BY id DESC"
     );
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Get products error:", err.message);
+
+    res.status(500).json({
+      error: "Failed to load products",
+    });
   }
+});
 
-  if (error) {
-    return (
-      <div className="product-message">
-        {error}
-      </div>
-    );
+// Get single product by ID or slug
+router.get("/:identifier", async (req, res) => {
+  try {
+    const { identifier } = req.params;
+
+    let result;
+
+    if (/^\d+$/.test(identifier)) {
+      result = await pool.query(
+        "SELECT * FROM products WHERE id = $1",
+        [identifier]
+      );
+    } else {
+      result = await pool.query(
+        "SELECT * FROM products WHERE slug = $1",
+        [identifier]
+      );
+    }
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        error: "Product not found",
+      });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("Get product detail error:", err.message);
+
+    res.status(500).json({
+      error: "Failed to load product",
+    });
   }
+});
 
-  if (!product) {
-    return (
-      <div className="product-message">
-        Product not found
-      </div>
-    );
-  }
-
-  return (
-    <main className="product-detail-page">
-
-      <section className="product-detail-card">
-
-        <div className="product-image-box">
-          <img
-            src={product.img}
-            alt={`${product.name} handmade artisan product`}
-          />
-        </div>
-
-        <div className="product-info-box">
-
-          <p className="product-category">
-            {product.category}
-          </p>
-
-          <h1>
-            {product.name}
-          </h1>
-
-          <p className="product-price">
-            ${product.price}
-          </p>
-
-          <p className="product-short-desc">
-            {product.description}
-          </p>
-
-          <button
-            className="add-to-cart-btn"
-            onClick={handleAddToCart}
-          >
-            Add To Cart
-          </button>
-
-          <Link
-            to="/shop"
-            className="back-shop-link"
-          >
-            ← Back to Shop
-          </Link>
-
-        </div>
-
-      </section>
-
-    </main>
-  );
-}
+export default router;
