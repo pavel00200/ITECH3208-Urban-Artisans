@@ -17,7 +17,7 @@ app.use("/products", productRoutes);
 app.use("/orders",   orderRoutes);
 app.use("/artisans", artisanRoutes);
 
-// health check — visit https://urban-artisans-api.onrender.com/health to confirm server is running
+// health check — visit https://itech3208-urban-artisans.onrender.com/health to confirm server is running
 app.get("/health", (req, res) => {
   res.json({
     status: "Urban Artisans API is running",
